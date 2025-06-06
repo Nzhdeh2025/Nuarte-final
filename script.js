@@ -26,6 +26,7 @@ function loadComments(paintingId) {
     });
   });
 }
+console.log("Nuarte կայքը աշխատում է ճիշտ ձևով։");
 
 // Նոր քոմենտարիա ավելացնել
 function submitComment(paintingId) {
