@@ -1,19 +1,39 @@
-// Լեզվի փոխման գործառույթ
+// Firebase SDK-ի ներմուծում CDN-ից
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// Firebase-ի կոնֆիգուրացիա (փոխարինիր քո տվյալներով)
+const firebaseConfig = {
+  apiKey: "ՔՈ-API-KEY-Ը",
+  authDomain: "ՔՈ-APP.firebaseapp.com",
+  projectId: "ՔՈ-PROJECT-ID",
+  storageBucket: "ՔՈ-BUCKET.appspot.com",
+  messagingSenderId: "ՔՈ-SENDER-ID",
+  appId: "ՔՈ-APP-ID"
+};
+
+// Firebase-ի ինիցիալիզացում
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Լեզվի փոխման ֆունկցիա
 function changeLanguage(lang) {
   document.documentElement.lang = lang;
   localStorage.setItem("lang", lang);
-  // Այստեղ կարելի է ավելացնել թարգմանությունների բեռնում կամ լեզվային փոփոխություններ
-  alert("Language switched to: " + lang);
+  alert("Լեզուն փոխվեց՝ " + lang);
 }
 
-// Պատկերի քոմենտարիաների բեռնում (եթե Firebase է միացված)
+// Մեկնաբանությունների բեռնում
 function loadComments(paintingId) {
   const commentsContainer = document.getElementById(`comments-${paintingId}`);
-  commentsContainer.innerHTML = "Loading comments...";
-
-  // Firebase Firestore-ից բեռնել comments
-  import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-  const db = getFirestore();
+  commentsContainer.innerHTML = "Մեկնաբանությունները բեռնվում են...";
 
   const q = query(collection(db, "comments"), where("paintingId", "==", paintingId));
   getDocs(q).then(snapshot => {
@@ -21,14 +41,13 @@ function loadComments(paintingId) {
     snapshot.forEach(doc => {
       const data = doc.data();
       const p = document.createElement("p");
-      p.textContent = data.username + ": " + data.text;
+      p.textContent = `${data.username}: ${data.text}`;
       commentsContainer.appendChild(p);
     });
   });
 }
-console.log("Nuarte կայքը աշխատում է ճիշտ ձևով։");
 
-// Նոր քոմենտարիա ավելացնել
+// Մեկնաբանության ավելացման ֆունկցիա
 function submitComment(paintingId) {
   const name = document.getElementById(`name-${paintingId}`).value;
   const text = document.getElementById(`comment-${paintingId}`).value;
@@ -38,16 +57,20 @@ function submitComment(paintingId) {
     return;
   }
 
-  import { getFirestore, collection, addDoc } from "firebase/firestore";
-  const db = getFirestore();
-
   addDoc(collection(db, "comments"), {
-    paintingId: paintingId,
+    paintingId,
     username: name,
-    text: text,
+    text,
     createdAt: new Date()
   }).then(() => {
     alert("Մեկնաբանությունը ավելացվել է։");
     loadComments(paintingId);
   });
 }
+
+// Մեկնաբանությունների ավտոմատ բեռնում
+loadComments("1");
+
+// Ֆունկցիաները հասանելի դարձնել գլոբալ տիրույթում
+window.changeLanguage = changeLanguage;
+window.submitComment = submitComment;
