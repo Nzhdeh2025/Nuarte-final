@@ -4,11 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nuarte Final</title>
-  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Բարի գալուստ Nuarte կայք</h1>
 
-  <script src="script.js"></script>
+  <!-- Լեզվի փոխիչ -->
+  <select onchange="changeLanguage(this.value)">
+    <option value="hy">Հայերեն</option>
+    <option value="en">English</option>
+    <option value="ru">Русский</option>
+  </select>
+
+  <!-- Նկար և մեկնաբանությունների բաժին -->
+  <div>
+    <h2>Նկար 1</h2>
+    <img src="painting.jpg" alt="Painting 1" width="300" />
+
+    <div>
+      <input id="name-1" placeholder="Ձեր անունը" />
+      <input id="comment-1" placeholder="Մեկնաբանություն" />
+      <button onclick="submitComment('1')">Ուղարկել</button>
+    </div>
+
+    <div id="comments-1"></div>
+  </div>
+
+  <!-- Կցել JavaScript ֆայլը որպես մոդուլ -->
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
