@@ -1,4 +1,3 @@
-console.log("JS ֆայլը միացված է");
 // Firebase SDK-ի ներմուծում CDN-ից
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
